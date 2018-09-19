@@ -38,6 +38,7 @@ On CPU, it is also trivial to implement; on the GPU, we could also create a para
 * First map each element to a 1 or 0 based on whether it meets the condition;
 * Then scan the mapped array using former parallel scan algoritm
 * Finally scatter the original array
+
 ![](img/scatter.jpg)
 
 
