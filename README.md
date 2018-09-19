@@ -9,27 +9,39 @@ CUDA Stream Compaction
 
 
 
-### (Background)
-## Scan 
+## Background
+### Scan 
 *Prefix Sum*, A.K.A. *Scan*, is a widely used basic algorithm that:
 given an array, for each index, compute the sum of array elements before it.
 It is trivial to implement this on CPU, but we want to parallelize it to run on GPU.
 On GPU, every thread will only access a small part of data. A naive parallel method is shown as the following image:
+
 ![](img/prefixsum.png)
+
 Given this naive algorithm, a more efficient algorithm that uses two sweeps is shown as:
+
 Up-Sweep:
+
 ![](img/upsweep.jpg)
+
 Down-Sweep:
+
 ![](img/downsweep.jpg)
+
 This work-efficient algorithm reduced the complexity from *O(nlogn)* to *O(n)*
-## Stream Compaction is another widely used basic algorithm that:
+
+
+### Stream Compaction 
+It is another widely used basic algorithm that:
 given an array and a condition, wipe out all the elements that fails the condition. 
 On CPU, it is also trivial to implement; on the GPU, we could also create a parallel version based on the previous scan algorithm:
 * First map each element to a 1 or 0 based on whether it meets the condition;
 * Then scan the mapped array using former parallel scan algoritm
 * Finally scatter the original array
 ![](img/scatter.jpg)
-### (Project Description)
+
+
+## Project Description
 In this project, I implemented:
 * CPU scan
 * Naive GPU scan
@@ -65,6 +77,7 @@ Performance analysis on these algoritms are conducted.
       But I guess thrust treat data at different stages, like before/after 2^15 elements. Performances within each stage is stable and optimized, but drop significantly across stages.
   
   4. When array size is at 2^20(not ploted on image), work-efficient methods are much better than naive methods:
+  
       ![](img/220.png)
 
 - #### SCAN Algorithms Performances w.r.t. Block Size
